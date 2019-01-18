@@ -1,3 +1,5 @@
+import Foundation
+
 struct Play: Codable {
     var name: String
     var type: String
@@ -17,6 +19,12 @@ func statement(invoice: Invoice, plays: [String: Play]) -> String {
     var totalAmount = 0
     var volumeCredits: Int = 0
     var result = "Statement for \(invoice.customer)\n"
+    let format: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.locale = Locale(identifier: "en_US")
+        return formatter
+    }()
     
     for perf in invoice.performances {
         guard let play = plays[perf.playID] else { return "" }
@@ -48,10 +56,10 @@ func statement(invoice: Invoice, plays: [String: Play]) -> String {
         }
 
         // print line for this order
-        result += "  \(play.name): \(thisAmount/100) (\(perf.audience) seats)\n"
+        result += "  \(play.name): \(format.string(from: thisAmount / 100 as NSNumber) ?? "") (\(perf.audience) seats)\n"
         totalAmount += thisAmount
     }
-    result += "Amount owed is \(totalAmount / 100)\n"
+    result += "Amount owed is \(format.string(from: totalAmount / 100 as NSNumber) ?? "")\n"
     result += "You earned \(volumeCredits) credits"
     return result
 }
