@@ -7,3 +7,8 @@ This serves as the introduction on how to do refactoring and is the platform for
 
 ### Swift Package
 The starting point is a Swift package. You can create an Xcode project, if you prefer, by running `swift package generate-xcodeproj` from the terminal in the root directory of the project.
+
+### Guard
+[Guard](https://github.com/guard/guard) is set up to run `swift test` whenever changes are made within the `Sources` or `Tests` directories. 
+
+To run, execute `bundle exec guard` from the root of the project.
